@@ -1,0 +1,64 @@
+#
+# This is the user-interface definition of a Shiny web application. You can
+# run the application by clicking 'Run App' above.
+#
+# Find out more about building applications with Shiny here:
+#
+#    http://shiny.rstudio.com/
+#
+
+library(shiny)
+
+# Define UI for application that draws a histogram
+shinyUI(fluidPage(
+    # Application title
+    titlePanel(
+        "But are we ever going to use this in the real world? 
+        An investigation into Math and Science R&D development in various sectors."
+    ),
+    
+    # Sidebar with a slider input for number of bins
+    fluidPage(
+        sidebarLayout(
+            sidebarPanel(
+            
+                checkboxGroupInput(
+                    inputId = "country",
+                    label = "View Data from selected Countries",
+                    choices = unique(data$Country)
+                    )
+                
+            ),
+    
+            mainPanel(
+                plotOutput("graph")
+            )
+        )
+    ),
+    
+    fluidRow(
+        column(
+            width = 4, offset = 2,
+            selectInput(
+                "sector",
+                "Select the type of R&D funding:",
+                c(
+                    "Choose an Option:" = "opt",
+                    "GBARD" = "C_",
+                    "BERD" = "B_",
+                    "GERD" = "G_"
+                )
+            )
+        ),
+        column(
+            width = 4,
+            selectizeInput(
+                "rnd_type",
+                "Select what information you'd like to view:",
+                choices = data$MSTI.Variables
+            )
+        )
+        )
+    )
+)
+
