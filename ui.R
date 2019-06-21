@@ -27,13 +27,11 @@ dashboardPage(
   ),
       
   dashboardBody(
+    htmlOutput("gvisChart"),
+    
     fluidRow(
         column(
-          width = 8,
-          htmlOutput("gvisChart")
-          ),
-        column(
-          width = 4,
+          width = 4, offset = 2,
           selectInput(
             "sector",
             "Select the type of R&D funding",
@@ -45,8 +43,11 @@ dashboardPage(
               "Gross Domestic Expenditure on R&D" = "G_",
               "Human Resources" = "TP"
             )
+          )
           ),
-          
+        
+        column(
+          width = 4,
           selectizeInput(
             "rnd_type",
             "Related Statistics",

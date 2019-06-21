@@ -16,7 +16,7 @@ shinyServer(function(input, output, session) {
       
         info_type = data %>%
             filter(src == input$sector) %>%
-            select(MSTI.Variables)
+            select(MSTI.Variables) 
         updateSelectizeInput(
             session, "rnd_type",
             choices = info_type,
@@ -39,14 +39,16 @@ shinyServer(function(input, output, session) {
     output$gvisChart = renderGvis({
       
       if (length(input$country) == 0) {
-        Line2 <- gvisLineChart(rnd_info(), "YEAR", names,
-                             options=list(title=input$rnd_type)
-                             )
+        Line2 <- gvisLineChart(rnd_info(), "YEAR", names[-31],
+                              options=list(title=input$rnd_type,
+                                          height = 600)
+                              )
       } else {
         Line2 <- gvisLineChart(rnd_info(), "YEAR", input$country,
-                               options=list(title=input$rnd_type)
-        )
-      }
+                               options=list(title=input$rnd_type,
+                                            height = 600)
+                              )
+        }
       
       
     })

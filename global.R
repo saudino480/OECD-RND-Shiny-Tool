@@ -5,7 +5,7 @@ library(RColorBrewer)
 library(shinyWidgets)
 library(googleVis)
 
-data = read.csv("./data/Science_Math_Fifth_Clean.csv")
+data = read.csv("./data/Science_Math_Sixth_Clean.csv")
 
 data = data[,-1]
 
