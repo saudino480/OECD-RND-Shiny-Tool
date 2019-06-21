@@ -14,44 +14,46 @@ dashboardPage(
         checkboxGroupInput(
           inputId = "country",
           label = "Select Countries",
-          choices = unique(data$Country)
+          choices = names
         ),
         
         checkboxGroupInput(
           inputId = "data_type",
           label = "Info Type",
-          choices = c("Raw values" = "raw",
+          choices = c("Raw values" = "",
                       "Percentages" = "PC")
         )
         
   ),
       
   dashboardBody(
-        plotOutput("graph"),
-        htmlOutput("gvisChart"),
-  
-  fluidRow(
-    column(
-      width = 4, offset = 2,
-      selectInput(
-        "sector",
-        "Select the type of R&D funding",
-        c(
-          "Choose an Option" = "opt",
-          "Value Added" = "VA",
-          "Government Budget Allocations for R&D" = "C_",
-          "Business Enterprise Expenditure on R&D" = "B_",
-          "Gross Domestic Expenditure on R&D" = "G_"
-        )
-      )
-    ),
-    column(
-      width = 4,
-      selectizeInput(
-        "rnd_type",
-        "Related Statistics",
-        choices = data$MSTI.Variables
-      )
+    fluidRow(
+        column(
+          width = 8,
+          htmlOutput("gvisChart")
+          ),
+        column(
+          width = 4,
+          selectInput(
+            "sector",
+            "Select the type of R&D funding",
+            c(
+              "Choose an Option" = "opt",
+              "Value Added" = "VA",
+              "Government Budget Allocations for R&D" = "C_",
+              "Business Enterprise Expenditure on R&D" = "B_",
+              "Gross Domestic Expenditure on R&D" = "G_",
+              "Human Resources" = "TP"
+            )
+          ),
+          
+          selectizeInput(
+            "rnd_type",
+            "Related Statistics",
+            choices = data$MSTI.Variables
+          )
+          
+
     )
   )
 )
