@@ -20,8 +20,9 @@ shinyServer(function(input, output, session) {
         updateSelectizeInput(
             session, "rnd_type",
             choices = info_type,
-            selected = info_type[1]
+            selected = ""
         )
+    
     }) 
     
     
@@ -50,6 +51,7 @@ shinyServer(function(input, output, session) {
                               )
         }
       
-      
     })
+    
+    
 })

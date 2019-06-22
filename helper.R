@@ -28,16 +28,32 @@ naSum = function(x, ...) {
 }
 
 
-
-test = data %>%
-  group_by(MSTI_VAR, MSTI.Variables) %>%
-  summarise_at(names, sum, na.rm=TRUE)
-
+percentage_finder = function(var) {
+  
+}
 
 
 
+label_extractor = function(df, idx) {
+  temp_df = unlist(df)
+  temp = ""
+  
+  for (i in idx) {
+        #print(i)
+        if (i != idx[1]) {
+          temp = paste(temp, as.character(temp_df[i]))
+          #print(paste("if statement", temp, i, sep= " : "))
+        } else {
+          temp = as.character(temp_df[i])
+          #print(paste("else statement", temp, i, sep= " : "))
+        } 
+  }
+  
+  #print(typeof(temp))
+  temp = unlist(strsplit(temp, split = " "))
 
-if (
+}
 
-else if
-  sum(col, na.rm=TRUE)
+
+
+
