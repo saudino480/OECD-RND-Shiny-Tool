@@ -55,20 +55,22 @@ shinyServer(function(input, output, session) {
     })
     
     output$gvisChart = renderGvis({
-      
-      #ylabel = paste0("{title:'", 
-      #                label_maker(rnd_info()$Unit, rnd_info()$PowerCode), 
-      #                "}")
+      validate(
+        need(input$rnd_type %in% data$MSTI.Variables, "")
+      )
+      ylabel = gvisLabelMaker(rnd_info()$label)
       
       if (length(input$country) == 0) {
-        Line2 <- gvisLineChart(rnd_info(), "YEAR", names,
+        graph = gvisLineChart(rnd_info(), "YEAR", names,
                               options=list(title=input$rnd_type,
-                                           #vAxes=ylabel,
+                                           vAxes=ylabel[1],
+                                           hAxes="[{title:'Year'}]",
                                            height = 600)
                               )
       } else {
-        Line2 <- gvisLineChart(rnd_info(), "YEAR", input$country,
+        graph = gvisLineChart(rnd_info(), "YEAR", input$country,
                                options=list(title=input$rnd_type,
+                                            vAxes=ylabel[1],
                                             height = 600)
                               )
         }

@@ -34,7 +34,15 @@ data3$PowerCode[data3$Unit == ""] = "Millions"
 
 data3$Unit[data3$Unit == ""] = "US Dollar"
 
-View(unique(data3$Unit))
+data3 = data3 %>%
+  mutate(label = label_maker(Unit, PowerCode))
+
+data4 = data3 %>%
+  transmute(gvisLabel = gvisLabelMaker(label))
+
+
+
+View(unique(data3$PowerCode))
 
 write.csv(data3, file = "./data/Science_Math_Seventh_Clean.csv")
 
