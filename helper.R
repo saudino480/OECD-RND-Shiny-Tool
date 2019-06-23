@@ -28,12 +28,6 @@ naSum = function(x, ...) {
 }
 
 
-percentage_finder = function(var) {
-  
-}
-
-
-
 label_extractor = function(df, idx) {
   temp_df = unlist(df)
   temp = ""
@@ -41,7 +35,7 @@ label_extractor = function(df, idx) {
   for (i in idx) {
         #print(i)
         if (i != idx[1]) {
-          temp = paste(temp, as.character(temp_df[i]))
+          temp = paste(temp, as.character(temp_df[i]), sep = "@")
           #print(paste("if statement", temp, i, sep= " : "))
         } else {
           temp = as.character(temp_df[i])
@@ -50,7 +44,7 @@ label_extractor = function(df, idx) {
   }
   
   #print(typeof(temp))
-  temp = unlist(strsplit(temp, split = " "))
+  temp = unlist(strsplit(temp, split = "@"))
 
 }
 

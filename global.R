@@ -9,12 +9,11 @@ data = read.csv("./data/Science_Math_Seventh_Clean.csv")
 
 data = data[,-1]
 
-names = colnames(data)[7:51]
+names = colnames(data)[7:20]
 
-B_ALL = "BERD performed in all industries (current PPP $)"
-B_XALL = "Percentage of BERD performed in all industries (current PPP $)"
+raw_types = label_extractor(unique(data$Unit), c(1,2,4,10))
 
-rnd = c(unique(data$MSTI.Variables), B_ALL, B_XALL)
+pc_types = label_extractor(unique(data$Unit), c(3,5,7))
 
 
 source("./helper.R")

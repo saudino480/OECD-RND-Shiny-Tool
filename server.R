@@ -14,9 +14,26 @@ shinyServer(function(input, output, session) {
     
   observe({
       
-        info_type = data %>%
+    
+        if (length(input$data_type) == 1) {
+          temp = switch (input$data_type,
+              "Raw values" = raw_types,
+              "Percentages" = pc_types
+            )
+          
+          info_type = data %>%
             filter(src == input$sector) %>%
-            select(MSTI.Variables) 
+            select(MSTI.Variables, Unit) %>%
+            filter(Unit %in% temp) %>%
+            select(MSTI.Variables)
+          
+        } else {
+          info_type = data %>%
+            filter(src == input$sector) %>%
+            select(MSTI.Variables)
+        }
+        
+        
         updateSelectizeInput(
             session, "rnd_type",
             choices = info_type,
@@ -39,10 +56,15 @@ shinyServer(function(input, output, session) {
     
     output$gvisChart = renderGvis({
       
+      #ylabel = paste0("{title:'", 
+      #                label_maker(rnd_info()$Unit, rnd_info()$PowerCode), 
+      #                "}")
+      
       if (length(input$country) == 0) {
-        Line2 <- gvisLineChart(rnd_info(), "YEAR", names[-31],
+        Line2 <- gvisLineChart(rnd_info(), "YEAR", names,
                               options=list(title=input$rnd_type,
-                                          height = 600)
+                                           #vAxes=ylabel,
+                                           height = 600)
                               )
       } else {
         Line2 <- gvisLineChart(rnd_info(), "YEAR", input$country,
