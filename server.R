@@ -48,17 +48,31 @@ shinyServer(function(input, output, session) {
         need(input$sector != "opt", "Please select a data set"),
         need(input$rnd_type %in% data$MSTI.Variables, "")
       )
-      
-      data %>%
-        filter(src == input$sector & MSTI.Variables == input$rnd_type)
-      
+      if (length(input$country) == 0) {
+        data %>%
+          filter(src == input$sector & MSTI.Variables == input$rnd_type)
+      } else {
+        data %>%
+          filter(src == input$sector & MSTI.Variables == input$rnd_type) %>%
+          select(data_labels, input$country)
+      }
+    })
+    
+    output$mydata = DT::renderDataTable({
+      rnd_info()
+    })
+    
+    output$rnd_type = renderText(input$rnd_type)
+    
+    output$gvisTable = renderGvis({
+      gvisTable(rnd_info())
     })
     
     output$gvisChart = renderGvis({
       validate(
         need(input$rnd_type %in% data$MSTI.Variables, "")
       )
-      ylabel = gvisLabelMaker(rnd_info()$label)
+      ylabel = gvisLabelMaker(rnd_info()$Unit, rnd_info()$PowerCode)
       
       if (length(input$country) == 0) {
         graph = gvisLineChart(rnd_info(), "YEAR", names,
@@ -77,5 +91,19 @@ shinyServer(function(input, output, session) {
       
     })
     
+    
+    #### placeholder --- pick up here ####
+    output$progressBox2 <- renderInfoBox({
+      infoBox(
+        "Progress", paste0(25 + input$count, "%"), icon = icon("list"),
+        color = "purple", fill = TRUE
+      )
+    })
+    output$approvalBox2 <- renderInfoBox({
+      infoBox(
+        "Approval", "80%", icon = icon("thumbs-up", lib = "glyphicon"),
+        color = "yellow", fill = TRUE
+      )
+    })
     
 })

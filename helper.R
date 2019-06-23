@@ -9,10 +9,10 @@ label_maker = function(col1, col2) {
   }
 }
 
-gvisLabelMaker = function(str) {
+gvisLabelMaker = function(col1, col2) {
   return({
     paste0("[{title:'",
-           as.character(str),
+           label_maker(col1, col2),
            "'}]")
   })
 }

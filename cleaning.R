@@ -34,12 +34,9 @@ data3$PowerCode[data3$Unit == ""] = "Millions"
 
 data3$Unit[data3$Unit == ""] = "US Dollar"
 
-data3 = data3 %>%
-  mutate(label = label_maker(Unit, PowerCode))
+temp = colnames(data3)[7:20]
 
-data4 = data3 %>%
-  transmute(gvisLabel = gvisLabelMaker(label))
-
+temp = unlist(lapply(temp, gsub, pattern = ".", replacement = " "))
 
 
 View(unique(data3$PowerCode))
