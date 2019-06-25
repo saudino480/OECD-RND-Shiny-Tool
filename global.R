@@ -21,6 +21,10 @@ temp = colnames(data)[6:20]
 
 names = unlist(lapply(temp, gsub, pattern = "[.]", replacement = " "))
 
+names[9] = "China"
+
+names[14] = "European Union (EU28)"
+
 colnames(data)[6:20] = names
 
 #lets get some data labels for later
@@ -30,5 +34,3 @@ data_labels = colnames(data)[1:5]
 raw_types = label_extractor(unique(data$Unit), c(1,2,4,10))
 
 pc_types = label_extractor(unique(data$Unit), c(3,5,7))
-
-

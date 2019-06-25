@@ -52,7 +52,11 @@ temp$Unit = as.factor("Percentage")
 
 temp$PowerCode = as.factor("Units")
 
+temp_2$MSTI_VAR = as.factor("VA_GDPPPP")
+
 data3 = rbind(data3, temp)
+
+data3 = rbind(data3, temp_2)
 
 data3$YEAR = as.numeric(data3$YEAR)
 

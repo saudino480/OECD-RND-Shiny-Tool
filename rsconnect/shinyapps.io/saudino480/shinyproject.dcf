@@ -1,0 +1,13 @@
+name: shinyproject
+title:
+username:
+account: saudino480
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 995502
+bundleId: 2177725
+url: https://saudino480.shinyapps.io/shinyproject/
+when: 1561484496.21165
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: cleaning.R|info.txt

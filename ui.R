@@ -8,19 +8,6 @@ sidebar = dashboardSidebar(
     menuItem("About", tabName = "about", icon = icon("person"))
   ),
   
-  checkboxGroupInput(
-    inputId = "country",
-    label = "Select Countries",
-    choices = names
-  ),
-  
-  checkboxGroupInput(
-    inputId = "data_type",
-    label = "Info Type",
-    choices = c("Raw values",
-                "Percentages")
-  ),
-  
   selectInput(
     "sector",
     "Select the type of R&D funding",
@@ -30,13 +17,30 @@ sidebar = dashboardSidebar(
       "Government Budget Allocations for R&D" = "C_",
       "Business Enterprise Expenditure on R&D" = "B_",
       "Gross Domestic Expenditure on R&D" = "G_",
+      "Higher education Expenditure on R&D" = "H_",
+      "Government Intramural Expenditure on R&D" = "GV_",
+      "Trade Balance" = "TD_",
       "Human Resources" = ".H_"
     )
   ),
   
   selectizeInput("rnd_type",
                  "Related Statistics",
-                 choices = data$MSTI.Variables)
+                 choices = data$MSTI.Variables),
+  
+  
+  checkboxGroupInput(
+    inputId = "data_type",
+    label = "Info Type",
+    choices = c("Raw values",
+                "Percentages")
+  ),
+  
+  checkboxGroupInput(
+    inputId = "country",
+    label = "Select Countries",
+    choices = names
+  )
   
 )
 
@@ -74,8 +78,7 @@ body = dashboardBody(tabItems (
           h4("This visualization hopes to allow you to look through this data and lead you to find out how relevant
               factors influence each countries' decision making pertaining to R&D."#,
                      #align = "center"
-                   ))),
-          htmlOutput("gvisMetaTable")),
+                   )))),
   
   tabItem(tabName = "graph",
           fluidPage(
@@ -86,7 +89,8 @@ body = dashboardBody(tabItems (
               height = "80%",
               width = "100%",
               tabPanel("Graph", htmlOutput("gvisChart")),
-              tabPanel("Table", htmlOutput("gvisTable"))
+              tabPanel("Table", htmlOutput("gvisTable")),
+              tabPanel("Meta Information", htmlOutput("gvisMetaTable"))
             ),
             
             br(),

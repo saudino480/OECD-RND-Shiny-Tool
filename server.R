@@ -60,76 +60,111 @@ shinyServer(function(input, output, session) {
     
     temp_countries = colnames(rnd_info())[!(colnames(rnd_info()) %in% data_labels)]
     
-    max_raw_df = rnd_info() %>%
-      group_by(MSTI_VAR) %>%
-      summarise_at(temp_countries, max, na.rm=TRUE)
-    
-    min_raw_df = rnd_info() %>%
-      group_by(MSTI_VAR) %>%
-      summarise_at(temp_countries, min, na.rm=TRUE)
-    
-    pc_df = rnd_info() %>%
-      group_by(MSTI_VAR) %>%
-      summarise_at(temp_countries, netPercent) %>%
-      select_if(~ !any(is.na(.)))
-    
-    pc_countries = colnames(pc_df)[2:length(colnames(pc_df))]
-    
-    #### raw values ####
-    max_raw_value = max_raw_df %>%
-      maxColValue(temp_countries) %>%
-      unlist()
+    if (rnd_info()$Unit[1] %in% raw_types) {
+      max_raw_df = rnd_info() %>%
+        group_by(MSTI_VAR) %>%
+        summarise_at(temp_countries, max, na.rm = TRUE)
       
-    max_raw_name = max_raw_df %>%
-      maxColName(temp_countries) %>%
-      unlist()
-    
-    max_raw_year = rnd_info() %>%
-      filter_at(vars(temp_countries), any_vars(. %in% max_raw_value)) %>%
-      select(YEAR) %>%
-      unlist()
-    
-    min_raw_value = min_raw_df %>%
-      minColValue(temp_countries) %>%
-      unlist()
+      min_raw_df = rnd_info() %>%
+        group_by(MSTI_VAR) %>%
+        summarise_at(temp_countries, min, na.rm = TRUE)
       
-    min_raw_name = min_raw_df %>%
-      minColName(temp_countries) %>%
-      unlist()
-    
-    min_raw_year = rnd_info() %>%
-      filter_at(vars(temp_countries), any_vars(. %in% min_raw_value)) %>%
-      select(YEAR) %>%
-      unlist()
-    
-    raw_info = data.frame(type = c("Max_Raw", "Min_Raw"),
-                          name = c(max_raw_name, min_raw_name),
-                          value = c(max_raw_value, min_raw_value),
-                          year = c(max_raw_year, min_raw_year))
-    
-    #### pc values #####
-    max_pc_value = pc_df %>%
-      maxColValue(pc_countries) %>%
-      unlist()
-    
-    max_pc_name = pc_df %>%
-      maxColName(pc_countries) %>%
-      unlist()
-    
-    min_pc_value = pc_df %>%
-      minColValue(pc_countries) %>%
-      unlist()
-    
-    min_pc_name = pc_df %>%
-      minColName(pc_countries) %>%
-      unlist()
-    
-    pc_info = data.frame(type = c("Max_PC", "Min_PC"),
-                         name = c(max_pc_name, min_pc_name),
-                         value = c(max_pc_value, min_pc_value),
-                         year = c(0, 0))
-    
-    meta = return(rbind(raw_info, pc_info))
+      #### raw values ####
+      max_raw_value = max_raw_df %>%
+        maxColValue(temp_countries) %>%
+        unlist()
+      
+      max_raw_name = max_raw_df %>%
+        maxColName(temp_countries) %>%
+        unlist()
+      
+      max_raw_year = rnd_info() %>%
+        filter_at(vars(temp_countries), any_vars(. %in% max_raw_value)) %>%
+        select(YEAR) %>%
+        unlist()
+      
+      min_raw_value = min_raw_df %>%
+        minColValue(temp_countries) %>%
+        unlist()
+      
+      min_raw_name = min_raw_df %>%
+        minColName(temp_countries) %>%
+        unlist()
+      
+      min_raw_year = rnd_info() %>%
+        filter_at(vars(temp_countries), any_vars(. %in% min_raw_value)) %>%
+        select(YEAR) %>%
+        unlist()
+      
+      raw_info = data.frame(
+        type = c("Max_Raw", "Min_Raw"),
+        name = c(max_raw_name, min_raw_name),
+        value = c(max_raw_value, min_raw_value),
+        year = c(max_raw_year, min_raw_year)
+      )
+      
+      
+      pc_df = rnd_info() %>%
+        group_by(MSTI_VAR) %>%
+        summarise_at(temp_countries, netPercent) %>%
+        select_if(~ !any(is.na(.)))
+      
+      pc_countries = colnames(pc_df)[2:length(colnames(pc_df))]
+      
+      max_pc_value = pc_df %>%
+        maxColValue(pc_countries) %>%
+        unlist()
+      
+      max_pc_name = pc_df %>%
+        maxColName(pc_countries) %>%
+        unlist()
+      
+      min_pc_value = pc_df %>%
+        minColValue(pc_countries) %>%
+        unlist()
+      
+      min_pc_name = pc_df %>%
+        minColName(pc_countries) %>%
+        unlist()
+      
+      pc_info = data.frame(type = c("Max_PC", "Min_PC"),
+                           name = c(max_pc_name, min_pc_name),
+                           value = c(max_pc_value, min_pc_value),
+                           year = c(0, 0))
+      
+      meta = return(rbind(pc_info, raw_info))
+      
+    } else {
+      pc_type_df = rnd_info() %>%
+        group_by(MSTI_VAR) %>%
+        summarise_at(temp_countries, netChange) %>%
+        select_if(~ !any(is.na(.)))
+      
+      pc_countries = colnames(pc_type_df)[2:length(colnames(pc_type_df))]
+      
+      max_pc_value = pc_type_df %>%
+        maxColValue(pc_countries) %>%
+        unlist()
+      
+      max_pc_name = pc_type_df %>%
+        maxColName(pc_countries) %>%
+        unlist()
+      
+      min_pc_value = pc_type_df %>%
+        minColValue(pc_countries) %>%
+        unlist()
+      
+      min_pc_name = pc_type_df %>%
+        minColName(pc_countries) %>%
+        unlist()
+      
+      pc_info = data.frame(type = c("Max_PC", "Min_PC"),
+                           name = c(max_pc_name, min_pc_name),
+                           value = c(max_pc_value, min_pc_value),
+                           year = c(0, 0))
+      
+      
+    }
     
   })
   
@@ -143,7 +178,7 @@ shinyServer(function(input, output, session) {
   })
   
   output$gvisChart = renderGvis({
-    validate(need(input$rnd_type %in% data$MSTI.Variables, ""))
+    #validate(need(input$rnd_type %in% data$MSTI.Variables, ""))
     ylabel = gvisLabelMaker(rnd_info()$Unit, rnd_info()$PowerCode)
     
     if (length(input$country) == 0) {
@@ -202,9 +237,9 @@ shinyServer(function(input, output, session) {
     #validate(need(meta_info() != ""))
     
     infoBox(
-        paste("Highest Growth:", meta_info()$name[3]),
-        paste0(round(meta_info()$value[3], 4), "%"),
-        icon = icon("list"),
+        paste("Highest Growth:", meta_info()$name[1]),
+        paste0(round(meta_info()$value[1], 4), "%"),
+        icon = icon("thumbs-up", lib = "glyphicon"),
         color = "green",
         fill = TRUE
         )
@@ -212,12 +247,11 @@ shinyServer(function(input, output, session) {
   
   output$minPC <- renderInfoBox({
     
-    #validate(need(meta_info() != ""))
     
     
     infoBox(
-      paste("Highest Loss:", meta_info()$name[4]),
-      paste0(round(meta_info()$value[4], 4), "%"),
+      paste("Biggest Loss:", meta_info()$name[2]),
+      paste0(round(meta_info()$value[2], 4), "%"),
       icon = icon("thumbs-down", lib = "glyphicon"),
       color = "red",
       fill = TRUE
@@ -226,13 +260,13 @@ shinyServer(function(input, output, session) {
   
   output$rawMax <- renderInfoBox({
     
-    #validate(need(meta_info() != ""))
+    validate(need(nrow(meta_info()) >= 3, ""))
     
     
     infoBox(
-      paste("Highest Value:", meta_info()$name[1]),
-      subtitle = paste("Year", meta_info()$year[1]),
-      paste(round(meta_info()$value[1], 4), "(", label_maker(rnd_info()$Unit, rnd_info()$PowerCode), ")"),
+      paste("Highest Value:", meta_info()$name[3]),
+      subtitle = paste("Year", meta_info()$year[3]),
+      paste(round(meta_info()$value[3], 4), "(", label_maker(rnd_info()$Unit[1], rnd_info()$PowerCode[1]), ")"),
       icon = icon("thumbs-up", lib = "glyphicon"),
       color = "green",
       fill = TRUE
@@ -241,13 +275,12 @@ shinyServer(function(input, output, session) {
   
   output$rawMin <- renderInfoBox({
     
-    #validate(need(meta_info() != ""))
-    
+    validate(need(nrow(meta_info()) >= 3, ""))
     
     infoBox(
-      paste("Lowest Value:", meta_info()$name[2]),
-      subtitle = paste("Year", meta_info()$year[2]),
-      paste(round(meta_info()$value[2], 4), label_maker(rnd_info()$Unit, rnd_info()$PowerCode)),
+      paste("Lowest Value:", meta_info()$name[4]),
+      subtitle = paste("Year", meta_info()$year[4]),
+      paste(round(meta_info()$value[4], 4), "(", label_maker(rnd_info()$Unit[1], rnd_info()$PowerCode[1]), ")"),
       icon = icon("thumbs-down", lib = "glyphicon"),
       color = "red",
       fill = TRUE

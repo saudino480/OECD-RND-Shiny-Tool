@@ -61,7 +61,16 @@ netPercent = function(x) {
     return(NA)
   } else {
     temp = unlist(x[which(!is.na(x))])
-    return((temp[length(temp)] - temp[1]) / temp[1])
+    return(((temp[length(temp)] - temp[1]) / temp[1])*100)
+  }
+}
+
+netChange = function(x) {
+  if (all(unlist(lapply(x, is.na)))) {
+    return(NA)
+  } else {
+    temp = unlist(x[which(!is.na(x))])
+    return(temp[length(temp)] - temp[1])
   }
 }
 
