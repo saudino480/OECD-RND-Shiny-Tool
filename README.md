@@ -1,2 +1,12 @@
 # OECD-RND-Shiny-Tool
 Visualization of OECD's Main Science and Technology Indicators data
+
+Read my analysis of the data [here](https://nycdatascience.com/blog/student-works/south-koreas-rd-success/)!
+
+This data set before you comes from the Organization for Economic Co-Operation and Development (known as the OECD), which is an intergovernmental economic organization with 36 member countries. We will not be viewing all of these countries here, for the sake of clarity in the graphs. The OECD collect data on markets around the world, along with providing a space for the dialogue between policy makers for the betterment of the market. This particular data set is the Main Science and Technology Indicators for 2018, which contains plenty of data on how markets in the various countries have responded to investment into Research and Development (R&D) fields, whether the money has come from businesses, governments, or elsewhere.
+
+A brief summary of the terms you will use to sort through the data. A main indicator of the sum total of national R&D efforts is the Gross Domestic Expenditure on Research and Experimental Development (GERD), which captures all spending on R&D carried out within any given economic year. The role businesses have to play in R&D performance is known as Business enterprise Expenditure on R&D (BERD). Unfortunately, due to the extensiveness of this field, most reporting is based on retrospective surveys. Data pertaining to Government Budget Allocations for R&D (GBARD) highlights different countries priorities when it comes to specific sectors of the market. These are broken down by those fields. A total look at value added to the market independently, and as a factor of each countries' GDP, can be found under the Value Added tab. Lastly, we have Human Resources, which has collected data about researchers working in the field. It includes data pertaining to gender equality, total share of jobs in the economy, and others.
+
+This visualization hopes to allow you to look through this data and lead you to find out how relevant factors influence each countries' decision making pertaining to R&D.
+
+RShiny files are split up into a couple of different files: global.R, server.R, and ui.R. cleaning.R handles the preprocessing of the data. I tried to make the tool very flexible, so some of the logic held in the server side gets to be a bit long. It was a good learning project--and perhaps I'll update it to read with more recent versions of the data.
